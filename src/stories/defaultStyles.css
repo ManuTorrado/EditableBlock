@@ -1,0 +1,9 @@
+.addItemButton {
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  color: grey;
+
+  &:hover {
+  }
+}

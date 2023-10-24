@@ -36,7 +36,9 @@ export const Block = ({
       }}
       id={id}
     >
-      <button onClick={handleAddButton}>+</button>
+      <button className="addItemButton" onClick={handleAddButton}>
+        +
+      </button>
 
       <div
         style={{

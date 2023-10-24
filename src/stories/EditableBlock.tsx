@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Block } from "./Block";
 import { v4 as uuidv4 } from "uuid";
 import Menu from "./Menu";
-
+import "./defaultStyles.css";
 export type Callback = (error?: Error | null, data?: any) => void;
 
 export interface block {
