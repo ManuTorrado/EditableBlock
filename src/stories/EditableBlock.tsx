@@ -4,12 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 
 type Callback = (error: Error | null, data?: any) => void;
 
-const gridSystem: React.CSSProperties = {
-  display: "grid",
-  gridTemplateRows: " auto",
-  gridTemplateColumns: " 50px 5fr",
-};
-
 export interface block {
   handleAdd: (Callback) => void;
   type?: string;
@@ -17,6 +11,7 @@ export interface block {
   id?: string;
   line: number;
   draggable?: boolean;
+  editable?: boolean;
   onDragStart?: React.DragEventHandler;
   onDragEnter?: React.DragEventHandler;
   OnDragEnd?: React.DragEventHandler;
@@ -31,7 +26,12 @@ interface Props {
 
 export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
   const [blocksState, SetBlocks] = useState<Array<block>>(blocks);
-  const [isEnumerated, setEnumerated] = useState(enumerated);
+
+  const gridSystem: React.CSSProperties = {
+    display: "grid",
+    gridTemplateRows: "auto",
+    gridTemplateColumns: enumerated ? "50px 5fr" : "5fr",
+  };
 
   const draggedItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
@@ -52,6 +52,7 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
     if (blocksState.length == 0) {
       SetBlocks([
         {
+          content: <h1>HOLAAAAAA</h1>,
           id: uuidv4(),
           line: 0,
           handleAdd: handleAdd,
@@ -73,17 +74,21 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
       >
         {blocksState.map((block: block, key: number) => (
           <>
-            <div
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              {isEnumerated && <a style={{ textAlign: "center" }}>{key}</a>}
-            </div>
+            {enumerated && (
+              <div
+                style={{
+                  backgroundColor: "black",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {" "}
+                <a style={{ textAlign: "center" }}>{key}</a>
+              </div>
+            )}
 
             <Block
+              content={block.content}
               draggable
               onDragStart={() => (draggedItem.current = key)}
               onDragEnter={() => (draggedOverItem.current = key)}

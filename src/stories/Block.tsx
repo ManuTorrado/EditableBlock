@@ -9,14 +9,14 @@ export const Block = ({
   type,
   draggable = true,
   id,
+  editable = true,
   onDragStart,
   onDragEnter,
   OnDragEnd,
   onDragOver,
 }: block) => {
   const [isDraggable, setDraggable] = useState(draggable);
-  const [isEditable, setEditable] = useState(false);
-  const [numberLine, setNumberLine] = useState(line);
+
   const [isHovered, setHovered] = useState(false);
 
   const handleAddButton = () => {
@@ -40,17 +40,17 @@ export const Block = ({
       id={id}
     >
       <button onClick={handleAddButton}>+</button>
+
       <div
         style={{
           flexGrow: 1,
           flexShrink: 0,
-
           border: "1px solid black",
           opacity: 1,
         }}
-        contentEditable={isEditable}
+        contentEditable={editable}
       >
-        {id}
+        {content}
       </div>
     </div>
   );
