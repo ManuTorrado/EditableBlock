@@ -4,6 +4,12 @@ import { v4 as uuidv4 } from "uuid";
 
 type Callback = (error: Error | null, data?: any) => void;
 
+const gridSystem: React.CSSProperties = {
+  display: "grid",
+  gridTemplateRows: " auto",
+  gridTemplateColumns: " 50px 5fr",
+};
+
 export interface block {
   handleAdd: (Callback) => void;
   type?: string;
@@ -62,23 +68,19 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
     <div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          gap: 5,
-          border: "1px black dashed",
+          ...gridSystem,
         }}
       >
         {blocksState.map((block: block, key: number) => (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-            key={key}
-          >
-            <div style={{ backgroundColor: "black", color: "white" }}>
-              {isEnumerated && <a style={{ textAlign: "left" }}>{key}</a>}
+          <>
+            <div
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              {isEnumerated && <a style={{ textAlign: "center" }}>{key}</a>}
             </div>
 
             <Block
@@ -92,7 +94,7 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
               id={block.id}
               handleAdd={handleAdd}
             />
-          </div>
+          </>
         ))}
       </div>
     </div>
