@@ -1,31 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Block } from "./Block";
 import { v4 as uuidv4 } from "uuid";
+import Menu from "./Menu";
 
-type Callback = (error: Error | null, data?: any) => void;
+export type Callback = (error?: Error | null, data?: any) => void;
 
 export interface block {
-  handleAdd: (Callback) => void;
+  handleAdd: Callback;
   type?: string;
   content?: string | React.ReactNode;
   id?: string;
-  line: number;
   draggable?: boolean;
   editable?: boolean;
   onDragStart?: React.DragEventHandler;
   onDragEnter?: React.DragEventHandler;
   OnDragEnd?: React.DragEventHandler;
   onDragOver?: React.DragEventHandler;
+  key?: React.Key;
 }
 
 interface Props {
   style?: React.CSSProperties;
   enumerated?: boolean;
   blocks: Array<block>;
+  popUpMenu?: React.ReactNode;
 }
 
-export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
+export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
   const [blocksState, SetBlocks] = useState<Array<block>>(blocks);
+  const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   const gridSystem: React.CSSProperties = {
     display: "grid",
@@ -36,8 +39,8 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
   const draggedItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
 
-  const handleAdd = (data: block) => {
-    SetBlocks([...blocksState, data]);
+  const handleAdd = () => {
+    setMenuVisible(true);
   };
 
   const sortElements = () => {
@@ -49,31 +52,41 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
   };
 
   useEffect(() => {
-    if (blocksState.length == 0) {
-      SetBlocks([
-        {
-          content: <h1>HOLAAAAAA</h1>,
-          id: uuidv4(),
-          line: 0,
-          handleAdd: handleAdd,
-        },
-      ]);
-    }
-  });
+    SetBlocks([
+      {
+        id: uuidv4(),
+        handleAdd: handleAdd,
+        key: blocksState.length + 1,
+      },
+    ]);
+  }, []);
 
   useEffect(() => {
     console.log(blocksState);
   }, [blocksState]);
 
+  const closeMenu = () => {
+    setMenuVisible(false);
+  };
+
+  const pickOption = () => {
+    closeMenu();
+    const data: block = { id: uuidv4(), handleAdd: handleAdd };
+    SetBlocks([...blocksState, data]);
+  };
+
   return (
     <div>
+      <Menu onClose={closeMenu} isVisible={isMenuVisible}>
+        <button onClick={pickOption}>H1</button>
+      </Menu>
       <div
         style={{
           ...gridSystem,
         }}
       >
         {blocksState.map((block: block, key: number) => (
-          <>
+          <React.Fragment key={key}>
             {enumerated && (
               <div
                 style={{
@@ -82,7 +95,6 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
                   textAlign: "center",
                 }}
               >
-                {" "}
                 <a style={{ textAlign: "center" }}>{key}</a>
               </div>
             )}
@@ -94,12 +106,11 @@ export const EditableBlock = ({ blocks = [], enumerated = true }: Props) => {
               onDragEnter={() => (draggedOverItem.current = key)}
               OnDragEnd={sortElements}
               onDragOver={(e) => e.preventDefault()}
-              line={key}
               key={key}
               id={block.id}
               handleAdd={handleAdd}
             />
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

@@ -3,13 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import { block } from "./EditableBlock";
 
 export const Block = ({
-  line,
   content,
   handleAdd,
   type,
   draggable = true,
   id,
-  editable = true,
+  editable = false,
   onDragStart,
   onDragEnter,
   OnDragEnd,
@@ -20,9 +19,8 @@ export const Block = ({
   const [isHovered, setHovered] = useState(false);
 
   const handleAddButton = () => {
-    handleAdd({ id: uuidv4() });
+    handleAdd();
   };
-
   return (
     <div
       onDragOver={onDragOver}
@@ -34,7 +32,6 @@ export const Block = ({
         display: "flex",
         cursor: "pointer",
         flexGrow: 1,
-
         border: isHovered ? "1px blue solid" : "none",
       }}
       id={id}
@@ -47,6 +44,7 @@ export const Block = ({
           flexShrink: 0,
           border: "1px solid black",
           opacity: 1,
+          minWidth: "50px",
         }}
         contentEditable={editable}
       >
