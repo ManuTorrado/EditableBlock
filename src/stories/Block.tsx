@@ -32,8 +32,9 @@ export const Block = ({
       draggable={isDraggable}
       style={{
         display: "flex",
-        justifyContent: "space-around",
         cursor: "pointer",
+        flexGrow: 1,
+
         border: isHovered ? "1px blue solid" : "none",
       }}
       id={id}
@@ -42,6 +43,8 @@ export const Block = ({
       <div
         style={{
           flexGrow: 1,
+          flexShrink: 0,
+
           border: "1px solid black",
           opacity: 1,
         }}
