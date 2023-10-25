@@ -34,8 +34,8 @@ export const Block = (props: block) => {
     setMenuVisible(true);
   };
 
-  const pickOption = () => {
-    handleAdd();
+  const pickOption = (option) => {
+    handleAdd(option);
     closeMenu();
   };
 
@@ -70,15 +70,14 @@ export const Block = (props: block) => {
           <b>+</b>
         </button>
 
-        <Menu onClose={closeMenu} isVisible={isMenuVisible}>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-        </Menu>
+        <Menu
+          onClose={closeMenu}
+          onClick={pickOption}
+          isVisible={isMenuVisible}
+        ></Menu>
       </div>
       <div id={id} className={"block"}>
-        <i>Text</i>
+        {content}
       </div>
     </div>
   );
