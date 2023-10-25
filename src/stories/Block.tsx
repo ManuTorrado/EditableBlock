@@ -1,54 +1,84 @@
-import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState } from "react";
+
 import { block } from "./EditableBlock";
+import Menu from "./Menu";
+import "./defaultStyles.css";
+import MenuButton from "./MenuButton";
 
-export const Block = ({
-  content,
-  handleAdd,
-  type,
-  draggable = true,
-  id,
-  editable = false,
-  onDragStart,
-  onDragEnter,
-  OnDragEnd,
-  onDragOver,
-}: block) => {
+export const Block = (props: block) => {
+  const {
+    content = <i>{"Write here"}</i>,
+    handleAdd,
+    type,
+    draggable = true,
+    id,
+    editable = true,
+    onDragStart,
+    onDragEnter,
+    OnDragEnd,
+    onDragOver,
+  } = props;
+
   const [isDraggable, setDraggable] = useState(draggable);
+  const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
+  const [isHovered, setHover] = useState<boolean>(false);
 
-  const [isHovered, setHovered] = useState(false);
+  const onHover = () => {
+    setHover(true);
+  };
+  const onLeftHover = () => {
+    setHover(false);
+  };
 
   const handleAddButton = () => {
-    handleAdd();
+    setMenuVisible(true);
   };
+
+  const pickOption = () => {
+    handleAdd();
+    closeMenu();
+  };
+
+  const closeMenu = () => {
+    setMenuVisible(false);
+  };
+
   return (
     <div
+      onMouseEnter={onHover}
+      onMouseLeave={onLeftHover}
       onDragOver={onDragOver}
       onDragEnd={OnDragEnd}
       onDragStart={onDragStart}
       onDragEnter={onDragEnter}
       draggable={isDraggable}
-      style={{
-        display: "flex",
-        cursor: "pointer",
-        flexGrow: 1,
-        border: isHovered ? "1px blue solid" : "none",
-      }}
-      id={id}
     >
-      <button onClick={handleAddButton}>+</button>
+      <div className="dropdown">
+        <button
+          style={{ opacity: isHovered ? 1 : 0 }}
+          className="addItemButton"
+          onClick={handleAddButton}
+        >
+          <b>Drag</b>
+        </button>
 
-      <div
-        style={{
-          flexGrow: 1,
-          flexShrink: 0,
-          border: "1px solid black",
-          opacity: 1,
-          minWidth: "50px",
-        }}
-        contentEditable={editable}
-      >
-        {content}
+        <button
+          style={{ opacity: isHovered ? 1 : 0 }}
+          className="addItemButton"
+          onClick={handleAddButton}
+        >
+          <b>+</b>
+        </button>
+
+        <Menu onClose={closeMenu} isVisible={isMenuVisible}>
+          <MenuButton onClick={pickOption}>H1</MenuButton>
+          <MenuButton onClick={pickOption}>H1</MenuButton>
+          <MenuButton onClick={pickOption}>H1</MenuButton>
+          <MenuButton onClick={pickOption}>H1</MenuButton>
+        </Menu>
+      </div>
+      <div id={id} className={"block"}>
+        <i>Text</i>
       </div>
     </div>
   );
