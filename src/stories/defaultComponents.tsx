@@ -9,11 +9,13 @@ export const H1Component = (props: { text?: string }) => {
   );
 };
 
-export const H2Component = (text: string = "Insert something") => {
+export const H2Component = (props: { text?: string }) => {
+  const { text = "default text" } = props;
   return <h2 contentEditable>{text}</h2>;
 };
 
-export const PComponent = (text: string = "Insert something") => {
+export const PComponent = (props: { text?: string }) => {
+  const { text = "default text" } = props;
   return <p contentEditable>{text}</p>;
 };
 
@@ -26,12 +28,12 @@ const Components = [
   {
     name: "Heading 2",
     description: "Medium header",
-    component: H2Component,
+    component: <H2Component />,
   },
   {
     name: "Text",
     description: "Simple text",
-    component: PComponent,
+    component: <PComponent />,
   },
 ];
 
