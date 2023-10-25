@@ -34,8 +34,8 @@ export const Block = (props: block) => {
     setMenuVisible(true);
   };
 
-  const pickOption = () => {
-    handleAdd();
+  const pickOption = (option) => {
+    handleAdd(option);
     closeMenu();
   };
 
@@ -53,32 +53,33 @@ export const Block = (props: block) => {
       onDragEnter={onDragEnter}
       draggable={isDraggable}
     >
-      <div className="dropdown">
-        <button
-          style={{ opacity: isHovered ? 1 : 0 }}
-          className="addItemButton"
-          onClick={handleAddButton}
+      <div
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+        className="dropdown"
+      >
+        <div
+          style={{
+            textAlign: "center",
+            opacity: isHovered ? 1 : 0,
+          }}
         >
-          <b>Drag</b>
-        </button>
+          <button className="addItemButton" onClick={handleAddButton}>
+            <b>Drag</b>
+          </button>
 
-        <button
-          style={{ opacity: isHovered ? 1 : 0 }}
-          className="addItemButton"
-          onClick={handleAddButton}
-        >
-          <b>+</b>
-        </button>
+          <button className="addItemButton" onClick={handleAddButton}>
+            <b>+</b>
+          </button>
+        </div>
+        <Menu
+          onClose={closeMenu}
+          onClick={pickOption}
+          isVisible={isMenuVisible}
+        ></Menu>
 
-        <Menu onClose={closeMenu} isVisible={isMenuVisible}>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-          <MenuButton onClick={pickOption}>H1</MenuButton>
-        </Menu>
-      </div>
-      <div id={id} className={"block"}>
-        <i>Text</i>
+        <div id={id} className={"block"}>
+          {content}
+        </div>
       </div>
     </div>
   );

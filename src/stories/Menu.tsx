@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Components from "./defaultComponents";
 import { Callback } from "./EditableBlock";
 
 interface Props {
@@ -7,14 +7,19 @@ interface Props {
   isVisible: boolean;
   ref?: React.RefObject<HTMLInputElement>;
   onClose: (Callback) => void;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
-const Menu = ({ children, isVisible = false, onClose }: Props) => {
+const Menu = ({ children, isVisible = false, onClose, onClick }: Props) => {
   const menuStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "column",
     zIndex: 1000,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "white",
+  };
+
+  const handleClick = (component) => {
+    onClick(component);
   };
 
   return (
@@ -44,7 +49,18 @@ const Menu = ({ children, isVisible = false, onClose }: Props) => {
                   x
                 </button>
               </div>
-              {children}
+              {Components.map((component, key) => (
+                <div
+                  onClick={() => {
+                    handleClick(component);
+                  }}
+                  className={"componentButton"}
+                  key={key}
+                >
+                  <h2>{component.name}</h2>
+                  {component.description}
+                </div>
+              ))}
             </div>
           </div>
         </div>

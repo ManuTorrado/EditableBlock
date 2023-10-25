@@ -46,8 +46,8 @@ export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
     SetBlocks(blocksClone);
   };
 
-  const handleAdd = () => {
-    pickOption();
+  const handleAdd = (option) => {
+    pickOption(option);
   };
 
   useEffect(() => {
@@ -66,10 +66,12 @@ export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
     console.log(blocksState);
   }, [blocksState]);
 
-  const pickOption = () => {
+  const pickOption = (option) => {
+    console.log(option);
     const data: block = {
       id: uuidv4(),
       handleAdd: handleAdd,
+      content: option.component,
     };
     SetBlocks([...blocksState, data]);
   };
