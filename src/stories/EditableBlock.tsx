@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Block } from "./Block";
 import { v4 as uuidv4 } from "uuid";
-import Menu from "./Menu";
+
 import "./defaultStyles.css";
 export type Callback = (error?: Error | null, data?: any) => void;
 
@@ -28,7 +28,6 @@ interface Props {
 
 export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
   const [blocksState, SetBlocks] = useState<Array<block>>(blocks);
-  const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   const gridSystem: React.CSSProperties = {
     display: "grid",
@@ -39,10 +38,6 @@ export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
   const draggedItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
 
-  const handleAdd = () => {
-    setMenuVisible(true);
-  };
-
   const sortElements = () => {
     const blocksClone = [...blocksState];
     const fixClone = blocksClone[draggedItem.current];
@@ -51,35 +46,36 @@ export const EditableBlock = ({ blocks = [], enumerated = false }: Props) => {
     SetBlocks(blocksClone);
   };
 
+  const handleAdd = () => {
+    pickOption();
+  };
+
   useEffect(() => {
-    SetBlocks([
-      {
-        id: uuidv4(),
-        handleAdd: handleAdd,
-        key: blocksState.length + 1,
-      },
-    ]);
+    if (blocksState.length == 0) {
+      SetBlocks([
+        {
+          id: uuidv4(),
+          handleAdd: handleAdd,
+          key: blocksState.length + 1,
+        },
+      ]);
+    }
   }, []);
 
   useEffect(() => {
     console.log(blocksState);
   }, [blocksState]);
 
-  const closeMenu = () => {
-    setMenuVisible(false);
-  };
-
   const pickOption = () => {
-    closeMenu();
-    const data: block = { id: uuidv4(), handleAdd: handleAdd };
+    const data: block = {
+      id: uuidv4(),
+      handleAdd: handleAdd,
+    };
     SetBlocks([...blocksState, data]);
   };
 
   return (
-    <div>
-      <Menu onClose={closeMenu} isVisible={isMenuVisible}>
-        <button onClick={pickOption}>H1</button>
-      </Menu>
+    <div style={{ width: "100%" }}>
       <div
         style={{
           ...gridSystem,

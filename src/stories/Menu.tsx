@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Callback } from "./EditableBlock";
 
@@ -11,14 +11,8 @@ interface Props {
 
 const Menu = ({ children, isVisible = false, onClose }: Props) => {
   const menuStyle: React.CSSProperties = {
-    position: "fixed",
-    top: " 100%",
-    left: 0,
-    width: "100%",
-    height: " 100%",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: "column",
     zIndex: 1000,
     backgroundColor: "whitesmoke",
   };
@@ -26,9 +20,33 @@ const Menu = ({ children, isVisible = false, onClose }: Props) => {
   return (
     <>
       {isVisible && (
-        <div style={{ ...menuStyle }}>
-          <button onClick={onClose}>x</button>
-          {children}
+        <div className={"dropdown-content"} style={{ ...menuStyle }}>
+          <div style={{ width: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <p>Components</p>
+                <button
+                  style={{
+                    textAlign: "right",
+                    cursor: "pointer",
+                    float: "right",
+                    textDecoration: "none",
+                    backgroundColor: "transparent",
+                    border: "none",
+                  }}
+                  onClick={onClose}
+                >
+                  x
+                </button>
+              </div>
+              {children}
+            </div>
+          </div>
         </div>
       )}
     </>
